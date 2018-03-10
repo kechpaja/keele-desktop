@@ -142,6 +142,10 @@ public class TilesGame extends JPanel {
             this.endTime_ = System.currentTimeMillis();
         }
     }
+    
+    protected void addQueuedBlock(Block block) {
+        this.queuedBlocks_.add(block);
+    }
 
     private void incrementBlockList() {
         synchronized (this.blockList_) {

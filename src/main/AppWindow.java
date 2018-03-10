@@ -30,5 +30,15 @@ public class AppWindow extends JFrame {
         
         this.dispose(); // TODO is this right?
     }
+    
+    /*
+     * TODO
+     * 
+     *  - Some way to select which lesson to enter
+     *  
+     *  - More stuff in the lesson than just the game. There should be room for a brief chapter on grammar, or something like that.
+     *  
+     *  - A page where all vocab is presented together
+     */
 
 }
