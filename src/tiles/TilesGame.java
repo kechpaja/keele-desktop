@@ -1,6 +1,6 @@
 package tiles;
 
-import java.util.Collections;
+import java.awt.BorderLayout;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +21,7 @@ public class TilesGame extends JPanel {
                                     // screen height by height in units
     // TODO think about how to get unit height in such a way that it's always up
     // to date.
+    protected int tickLength_ = 100; // In milliseconds; TODO make configurable
 
     private List<Block> blockList_;
     private Queue<Block> queuedBlocks_;
@@ -52,70 +53,139 @@ public class TilesGame extends JPanel {
 
     public void play() {
         // Initialization
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setLayout(new BorderLayout());
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        AnswerField answerField = new AnswerField(this);
+        
+        this.add(panel, BorderLayout.CENTER);
+        this.add(answerField, BorderLayout.PAGE_END);
         this.initBlockList();
 
         // Running the actual game
         while (!this.gameIsOver()) {
             this.incrementBlockList();
-            this.displayBlockList();
-            this.validate();
+            this.displayBlockList(panel);
+            this.revalidate();
             try {
-                Thread.sleep(100); // TODO make this speed configurable
+                Thread.sleep(this.tickLength_);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+        
+        // Need to redisplay at the end.
+        // TODO add some sort of victory or loss screen?
+        this.displayBlockList(panel);
+        this.revalidate();
+    }
+    
+    protected void checkAnswer(String answer) {
+        synchronized (this.blockList_) {
+            AnswerableBlock lastAnswerableBlock = null;
+            if (this.blockList_.get(this.blockList_.size() - 1).isSpace()) {
+                if (this.blockList_.size() <= 1) {
+                    return; 
+                }
+                
+                lastAnswerableBlock = (AnswerableBlock) this.blockList_.get(this.blockList_.size() - 2);
+                
+                if (lastAnswerableBlock.isPossibleAnswer(answer)) {
+                    int height = lastAnswerableBlock.getHeightInUnits();
+                    
+                    // remove preceding block if it is space block
+                    if (this.blockList_.get(this.blockList_.size() - 3).isSpace()) {
+                        height += this.blockList_.get(this.blockList_.size() - 3).getHeightInUnits();
+                        this.blockList_.remove(this.blockList_.size() - 3);
+                    }
+                    
+                    // Remove last answerable block from list
+                    this.blockList_.remove(lastAnswerableBlock);
+                    
+                    // Remove following block
+                    height += this.blockList_.get(this.blockList_.size() - 1).getHeightInUnits();
+                    this.blockList_.remove(this.blockList_.size() - 1);
+                    
+                    // insert new space block
+                    this.blockList_.add(this.blockList_.size(), new Block(height));
+                }
+            } else {
+                lastAnswerableBlock = (AnswerableBlock) this.blockList_.get(this.blockList_.size() - 1);
+                
+                if (lastAnswerableBlock.isPossibleAnswer(answer)) {
+                    int height = lastAnswerableBlock.getHeightInUnits();
+                    
+                    // remove preceding block if it is space block
+                    if (this.blockList_.get(this.blockList_.size() - 2).isSpace()) {
+                        height += this.blockList_.get(this.blockList_.size() - 2).getHeightInUnits();
+                        this.blockList_.remove(this.blockList_.size() - 2);
+                    }
+                    
+                    // Remove last answerable block from list
+                    this.blockList_.remove(lastAnswerableBlock);
+                    
+                    // insert new space block
+                    this.blockList_.add(this.blockList_.size(), new Block(height));
+                }
             }
         }
     }
 
     private void incrementBlockList() {
-        // Find bottom-most block that is space
-        Block lastSpaceBlock = null;
-        for (Block block : this.blockList_) {
-            if (block.isSpace()) {
-                lastSpaceBlock = block;
+        synchronized (this.blockList_) {
+            // Find bottom-most block that is space
+            Block lastSpaceBlock = null;
+            for (Block block : this.blockList_) {
+                if (block.isSpace()) {
+                    lastSpaceBlock = block;
+                }
             }
-        }
-
-        // If this is also top-most block, then add an ImageBlock and a space
-        // block of mutually counteracting sizes
-        if (lastSpaceBlock == this.blockList_.get(0)) {
-            if (this.queuedBlocks_.isEmpty()) {
-                return;
+    
+            // If this is also top-most block, then add an ImageBlock and a space
+            // block of mutually counteracting sizes
+            if (lastSpaceBlock == this.blockList_.get(0)) {
+                if (this.queuedBlocks_.isEmpty()) {
+                    return;
+                }
+    
+                Block nextBlock = this.queuedBlocks_.poll();
+                this.blockList_.add(0, nextBlock);
+                this.blockList_.add(0, new Block(0 - nextBlock.getHeightInUnits()));
             }
-
-            Block nextBlock = this.queuedBlocks_.poll();
-            this.blockList_.add(0, nextBlock);
-            this.blockList_.add(0, new Block(0 - nextBlock.getHeightInUnits()));
-        }
-
-        // Remove one unit from size of bottom-most space block, and add one to
-        // top-most block (which will always be a space block)
-        lastSpaceBlock.decrementHeight();
-        this.blockList_.get(0).incrementHeight();
-
-        // Delete all blocks with size zero
-        if (lastSpaceBlock.getHeightInUnits() == 0) {
-            this.blockList_.remove(lastSpaceBlock);
+    
+            // Remove one unit from size of bottom-most space block, and add one to
+            // top-most block (which will always be a space block)
+            lastSpaceBlock.decrementHeight();
+            this.blockList_.get(0).incrementHeight();
+    
+            // Delete last space block if it has height zero
+            if (lastSpaceBlock.getHeightInUnits() == 0) {
+                this.blockList_.remove(lastSpaceBlock);
+            }
         }
     }
 
     private void initBlockList() {
-        this.blockList_ = Collections.synchronizedList(new LinkedList<Block>());
+        this.blockList_ = new LinkedList<Block>();
         this.blockList_.add(new Block(50));
     }
 
-    private void displayBlockList() {
-        this.removeAll();
-        for (Block block : this.blockList_) {
-            this.add(block.toComponent(this.unitHeight_));
+    private void displayBlockList(JPanel panel) {
+        synchronized (this.blockList_) {
+            panel.removeAll();
+            for (Block block : this.blockList_) {
+                panel.add(block.toComponent(this.unitHeight_));
+            }
         }
     }
 
     private boolean gameHasBeenLost() {
-        for (Block block : this.blockList_) {
-            if (block.isSpace()) {
-                return false;
+        synchronized (this.blockList_) {
+            for (Block block : this.blockList_) {
+                if (block.isSpace()) {
+                    return false;
+                }
             }
         }
 
@@ -127,9 +197,11 @@ public class TilesGame extends JPanel {
             return false;
         }
 
-        for (Block block : this.blockList_) {
-            if (!block.isSpace()) {
-                return false;
+        synchronized (this.blockList_) {
+            for (Block block : this.blockList_) {
+                if (!block.isSpace()) {
+                    return false;
+                }
             }
         }
 
