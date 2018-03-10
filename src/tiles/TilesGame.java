@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import scoring.GameResults;
+
 public class TilesGame extends JPanel {
 
     /**
@@ -21,7 +23,9 @@ public class TilesGame extends JPanel {
                                     // screen height by height in units
     // TODO think about how to get unit height in such a way that it's always up
     // to date.
-    protected int tickLength_ = 100; // In milliseconds; TODO make configurable
+    private int tickLength_ = 100; // In milliseconds; TODO make configurable
+    
+    private long endTime_; // TODO to be set later when game is won. 
 
     private List<Block> blockList_;
     private Queue<Block> queuedBlocks_;
@@ -51,7 +55,7 @@ public class TilesGame extends JPanel {
      * or lose tetris-style.
      */
 
-    public void play() {
+    public GameResults play() {
         // Initialization
         this.setLayout(new BorderLayout());
         
@@ -64,6 +68,7 @@ public class TilesGame extends JPanel {
         this.initBlockList();
 
         // Running the actual game
+        long startTime = System.currentTimeMillis(); // TODO where to get end time for accurate reporting of play time?
         while (!this.gameIsOver()) {
             this.incrementBlockList();
             this.displayBlockList(panel);
@@ -79,6 +84,8 @@ public class TilesGame extends JPanel {
         // TODO add some sort of victory or loss screen?
         this.displayBlockList(panel);
         this.revalidate();
+        
+        return new GameResults(this.endTime_ - startTime, this.gameHasBeenWon());
     }
     
     protected void checkAnswer(String answer) {
@@ -129,6 +136,10 @@ public class TilesGame extends JPanel {
                     this.blockList_.add(this.blockList_.size(), new Block(height));
                 }
             }
+        }
+        
+        if (this.gameHasBeenWon()) {
+            this.endTime_ = System.currentTimeMillis();
         }
     }
 

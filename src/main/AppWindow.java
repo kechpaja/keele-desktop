@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.JFrame;
 
+import scoring.GameResults;
 import tiles.TilesGame;
 
 public class AppWindow extends JFrame {
@@ -13,6 +14,7 @@ public class AppWindow extends JFrame {
 
     public static void main(String[] args) {
         AppWindow window = new AppWindow();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.init();
     }
 
@@ -23,7 +25,10 @@ public class AppWindow extends JFrame {
         this.pack();
         this.setVisible(true);
 
-        game.play();
+        GameResults results = game.play();
+        System.out.println(results);
+        
+        this.dispose(); // TODO is this right?
     }
 
 }

@@ -21,8 +21,6 @@ public class AnswerField extends JTextField implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyChar());
-        
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             this.game_.checkAnswer(this.getText().trim());
             this.setText("");
