@@ -1,4 +1,4 @@
-package tiles;
+package games;
 
 import java.awt.Component;
 import java.util.Set;
@@ -13,7 +13,7 @@ public class ImageBlock extends AnswerableBlock {
     }
 
     protected Component toComponent(int unitHeight) {
-        return Tile.createImageTile(this.pathToImage_, unitHeight * this.getHeightInUnits());
+        return ImageTile.createImageTile(this.pathToImage_, unitHeight * this.getHeightInUnits());
     }
 
     protected boolean isSpace() {

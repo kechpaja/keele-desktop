@@ -1,9 +1,10 @@
 package main;
 
+import games.TilesGame;
+
 import javax.swing.JFrame;
 
 import scoring.GameResults;
-import tiles.TilesGame;
 
 public class AppWindow extends JFrame {
 
@@ -40,5 +41,7 @@ public class AppWindow extends JFrame {
      *  
      *  - A page where all vocab is presented together
      */
+    
+    
 
 }

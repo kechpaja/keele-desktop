@@ -1,4 +1,4 @@
-package tiles;
+package games;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

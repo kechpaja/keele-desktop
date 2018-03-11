@@ -1,4 +1,4 @@
-package tiles;
+package games;
 
 import java.util.Set;
 

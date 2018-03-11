@@ -1,4 +1,4 @@
-package tiles;
+package games;
 
 import java.awt.BorderLayout;
 import java.util.HashSet;

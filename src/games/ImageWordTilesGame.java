@@ -1,4 +1,4 @@
-package tiles;
+package games;
 
 import java.util.Collections;
 import java.util.HashSet;
