@@ -1,4 +1,4 @@
-package games;
+package waterfall;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,9 +12,9 @@ public class AnswerField extends JTextField implements KeyListener {
      */
     private static final long serialVersionUID = 3983519022395130284L;
     
-    private TilesGame game_;
+    private Waterfall game_;
     
-    protected AnswerField(TilesGame game) {
+    protected AnswerField(Waterfall game) {
         this.game_ = game;
         this.addKeyListener(this);
     }

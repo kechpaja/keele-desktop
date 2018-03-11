@@ -1,4 +1,4 @@
-package games;
+package waterfall;
 
 import java.awt.BorderLayout;
 import java.util.HashSet;
@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import scoring.GameResults;
 
-public class TilesGame extends JPanel {
+public class Waterfall extends JPanel {
 
     /**
      * Added to make warning go away
@@ -30,7 +30,7 @@ public class TilesGame extends JPanel {
     private List<Block> blockList_;
     private Queue<Block> queuedBlocks_;
 
-    public TilesGame() {
+    public Waterfall() {
         // TODO take set as input, and convert it to list of queued blocks. Be
         // sure to shuffle.
         this.queuedBlocks_ = new LinkedList<Block>();

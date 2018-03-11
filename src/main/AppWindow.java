@@ -1,10 +1,9 @@
 package main;
 
-import games.TilesGame;
-
 import javax.swing.JFrame;
 
 import scoring.GameResults;
+import waterfall.Waterfall;
 
 public class AppWindow extends JFrame {
 
@@ -20,7 +19,7 @@ public class AppWindow extends JFrame {
     }
 
     private void init() {
-        TilesGame game = new TilesGame();
+        Waterfall game = new Waterfall();
         this.setContentPane(game);
 
         this.pack();

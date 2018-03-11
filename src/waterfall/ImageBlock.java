@@ -1,4 +1,4 @@
-package games;
+package waterfall;
 
 import java.awt.Component;
 import java.util.Set;

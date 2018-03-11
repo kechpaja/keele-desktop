@@ -1,4 +1,4 @@
-package games;
+package waterfall;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -8,14 +8,14 @@ import java.util.Set;
 import lessons.Lesson;
 import lessons.TranslatedPair;
 
-public class ImageWordTilesGame extends TilesGame {
+public class ImageWordWaterfall extends Waterfall {
 
     /**
      * Added to keep the compiler happy
      */
     private static final long serialVersionUID = 4320382297795091066L;
     
-    public ImageWordTilesGame(Lesson lesson) {
+    public ImageWordWaterfall(Lesson lesson) {
         List<TranslatedPair> lessonContent = lesson.getContent();
         
         // Shuffle list
