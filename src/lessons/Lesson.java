@@ -1,11 +1,10 @@
 package lessons;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Lesson {
     
-    private List<TranslatedPair> content;
+    private ArrayList<TranslatedPair> content;
     
     protected void setBasePath(String basePath) {
         for (TranslatedPair pair : this.content) {
@@ -13,7 +12,7 @@ public class Lesson {
         }
     }
     
-    public List<TranslatedPair> getContent() {
+    public ArrayList<TranslatedPair> getContent() {
         ArrayList<TranslatedPair> pairs = new ArrayList<TranslatedPair>();
         for (TranslatedPair tp : this.content) {
             pairs.add(tp);

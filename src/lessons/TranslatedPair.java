@@ -1,20 +1,19 @@
 package lessons;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TranslatedPair {
 
     private String item;
-    private List<String> translations;
+    private ArrayList<String> translations;
     
     // TODO replace string paths with path objects to increase portability
-    private List<String> images;
-    private List<String> audio;
+    private ArrayList<String> images;
+    private ArrayList<String> audio;
     
     private transient String basePath_;
 
-    public TranslatedPair(String item, List<String> translations, List<String> images, List<String> audio) {
+    public TranslatedPair(String item, ArrayList<String> translations, ArrayList<String> images, ArrayList<String> audio) {
         this.item = item;
         this.translations = translations;
         this.images = images;
@@ -25,11 +24,11 @@ public class TranslatedPair {
         return this.item;
     }
     
-    public List<String> getTranslations() {
+    public ArrayList<String> getTranslations() {
         return this.translations;
     }
     
-    public List<String> getImagePaths() {
+    public ArrayList<String> getImagePaths() {
         ArrayList<String> imgs = new ArrayList<String>();
         for (String path : this.images) {
             imgs.add(this.basePath_ + "/" + path);
@@ -37,7 +36,7 @@ public class TranslatedPair {
         return imgs;
     }
     
-    public List<String> getAudioFilePaths() {
+    public ArrayList<String> getAudioFilePaths() {
         ArrayList<String> auds = new ArrayList<String>();
         for (String path : this.audio) {
             auds.add(this.basePath_ + "/" + path);
