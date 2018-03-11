@@ -3,6 +3,8 @@ package games;
 import java.awt.Component;
 import java.util.Set;
 
+import tiles.ImageTile;
+
 public class ImageBlock extends AnswerableBlock {
 
     private String pathToImage_;

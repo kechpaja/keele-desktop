@@ -1,4 +1,4 @@
-package games;
+package tiles;
 
 import java.awt.Image;
 import java.io.File;
@@ -6,9 +6,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
-public class ImageTile extends JLabel {
+public class ImageTile extends Tile {
 
     /**
      * Added to keep compiler happy
@@ -16,7 +15,7 @@ public class ImageTile extends JLabel {
     private static final long serialVersionUID = 6271081464162395185L;
 
     private ImageTile(ImageIcon image) {
-        super(image);
+        this.setIcon(image);
         this.validate();
     }
 
