@@ -1,8 +1,15 @@
 package main;
 
+import java.io.FileNotFoundException;
+
 import javax.swing.JFrame;
 
+import pages.GrammarPage;
+import pages.LessonHomePage;
+import lessons.Lesson;
+import lessons.LessonManager;
 import scoring.GameResults;
+import waterfall.ImageWordWaterfall;
 import waterfall.Waterfall;
 
 public class AppWindow extends JFrame {
@@ -19,16 +26,32 @@ public class AppWindow extends JFrame {
     }
 
     private void init() {
-        Waterfall game = new Waterfall();
-        this.setContentPane(game);
-
+        Lesson lesson = null;
+        try {
+            lesson = LessonManager.loadLesson("/home/kechpaja/dev/keele/test-lessons/horn");
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        //GrammarPage grammarPage = new GrammarPage(lesson.getGrammar());
+        //grammarPage.claimScreen(this);
+        
+        LessonHomePage lhp = new LessonHomePage(lesson);
+        lhp.claimScreen(this);
+        
+        
+        
+//        Waterfall game = new ImageWordWaterfall(lesson);
+//        this.setContentPane(game);
+//
         this.pack();
         this.setVisible(true);
-
-        GameResults results = game.play();
-        System.out.println(results);
+//
+//        GameResults results = game.play();
+//        System.out.println(results);
         
-        this.dispose(); // TODO is this right?
+        //this.dispose(); // TODO is this right?
     }
     
     /*

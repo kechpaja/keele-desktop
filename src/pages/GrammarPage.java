@@ -1,6 +1,11 @@
 package pages;
 
-import main.ActivityPanel;
+import java.awt.BorderLayout;
+
+
+//import javax.swing.BoxLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 public class GrammarPage extends ActivityPanel {
 
@@ -9,10 +14,21 @@ public class GrammarPage extends ActivityPanel {
      */
     private static final long serialVersionUID = 3301859358004448722L;
     
+    private JTextPane text_;
     
-    // TODO figure out how this corresponds to what's stored in the lesson and thus in JSON. 
-    
-    
-    // TODO allow for tables and stuff. 
+    // Content should be formatted using HTML. 
+    public GrammarPage(String content) {
+        this.text_ = new JTextPane();
+        this.text_.setContentType("text/html");
+        this.text_.setText(content);
+        this.text_.setEditable(false);
+        
+        JScrollPane scrollable = new JScrollPane(this.text_);
+        
+        //this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        //this.setLayout(new BorderLayout());
+        this.add(scrollable, BorderLayout.CENTER);
+        this.validate();
+    }
 
 }

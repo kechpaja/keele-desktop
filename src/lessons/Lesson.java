@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Lesson {
     
     private ArrayList<TranslatedPair> content;
+    private String grammar;
     
     protected void setBasePath(String basePath) {
         for (TranslatedPair pair : this.content) {
@@ -18,6 +19,10 @@ public class Lesson {
             pairs.add(tp);
         }
         return pairs;
+    }
+    
+    public String getGrammar() {
+        return this.grammar;
     }
 
 }

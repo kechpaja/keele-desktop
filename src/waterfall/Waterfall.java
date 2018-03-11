@@ -1,18 +1,16 @@
 package waterfall;
 
 import java.awt.BorderLayout;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import scoring.GameResults;
 
-public class Waterfall extends JPanel {
+public abstract class Waterfall extends JPanel {
 
     /**
      * Added to make warning go away
@@ -25,23 +23,12 @@ public class Waterfall extends JPanel {
     // to date.
     private int tickLength_ = 100; // In milliseconds; TODO make configurable
     
-    private long endTime_; // TODO to be set later when game is won. 
-
+    private long endTime_;
     private List<Block> blockList_;
     private Queue<Block> queuedBlocks_;
-
-    public Waterfall() {
-        // TODO take set as input, and convert it to list of queued blocks. Be
-        // sure to shuffle.
+    
+    protected Waterfall() {
         this.queuedBlocks_ = new LinkedList<Block>();
-        
-        Set<String> hornset = new HashSet<String>();
-        hornset.add("horn");
-        this.queuedBlocks_.add(new ImageBlock("horn.jpg", hornset));
-        
-        Set<String> cornuset = new HashSet<String>();
-        cornuset.add("cornu");
-        this.queuedBlocks_.add(new ImageBlock("horn.jpg", cornuset));
     }
 
     /*
@@ -65,10 +52,12 @@ public class Waterfall extends JPanel {
         
         this.add(panel, BorderLayout.CENTER);
         this.add(answerField, BorderLayout.PAGE_END);
-        this.initBlockList();
+        
+        this.blockList_ = new LinkedList<Block>();
+        this.blockList_.add(new Block(50));
 
         // Running the actual game
-        long startTime = System.currentTimeMillis(); // TODO where to get end time for accurate reporting of play time?
+        long startTime = System.currentTimeMillis();
         while (!this.gameIsOver()) {
             this.incrementBlockList();
             this.displayBlockList(panel);
@@ -179,11 +168,6 @@ public class Waterfall extends JPanel {
                 this.blockList_.remove(lastSpaceBlock);
             }
         }
-    }
-
-    private void initBlockList() {
-        this.blockList_ = new LinkedList<Block>();
-        this.blockList_.add(new Block(50));
     }
 
     private void displayBlockList(JPanel panel) {

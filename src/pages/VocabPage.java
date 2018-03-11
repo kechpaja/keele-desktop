@@ -3,7 +3,6 @@ package pages;
 import java.util.List;
 
 import lessons.TranslatedPair;
-import main.ActivityPanel;
 
 public class VocabPage extends ActivityPanel {
 
